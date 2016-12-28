@@ -1,0 +1,42 @@
+{
+    "name": "interpro/entrance",
+    "description": "Вход в движок.",
+    "version": "1.0.1",
+    "require": {
+        "interpro/core": "1.0.*",
+        "interpro/extractor": "1.0.*",
+        "interpro/imageaggr": "1.0.*",
+        "interpro/qsaggr": "1.0.*",
+        "interpro/scalar": "1.0.*",
+        "interpro/seo": "1.0.*"
+    },
+    "keywords": [
+        "entrance"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Boris Dorofeev",
+            "email": "boris.dorofeev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [],
+        "files": [],
+        "psr-4": {
+            "Interpro\\Entrance\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Interpro\\Entrance\\Test": "test/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable" : true
+}
