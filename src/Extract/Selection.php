@@ -32,6 +32,17 @@ class Selection implements SelectionInterface
     }
 
     /**
+     * @return int
+     */
+    public function count()
+    {
+        $type = $this->unit->getType();
+        $name = $this->unit->getName();
+
+        return $this->loader->countGroup($type, $name);
+    }
+
+    /**
      * @param string $field_path
      * @param string $value
      * @param string $or_union_name

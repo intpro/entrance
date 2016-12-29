@@ -27,12 +27,7 @@ class ExtractAgent implements ExtractAgentInterface
         $this->taxonomy = $taxonomy;
     }
 
-    /**
-     * @param string $group_name
-     *
-     * @return \Interpro\Entrance\Contracts\Extract\Selection
-     */
-    public function selectGroup($group_name, $selection_name = 'group')
+    private function newSelection($group_name, $selection_name)
     {
         $this->loader->reset();
         $this->tuner->reset();
@@ -48,6 +43,32 @@ class ExtractAgent implements ExtractAgentInterface
             $unit = $this->tuner->initSelection($type, $selection_name);
             $selection = new Selection($this->loader, $unit);
         }
+
+        return $selection;
+    }
+
+    /**
+     * @param string $group_name
+     * @param string $selection_name
+     *
+     * @return int
+     */
+    public function countGroup($group_name, $selection_name = 'group')
+    {
+        $selection = $this->newSelection($group_name, $selection_name);
+
+        return $selection->count();
+    }
+
+    /**
+     * @param string $group_name
+     * @param string $selection_name
+     *
+     * @return \Interpro\Entrance\Contracts\Extract\Selection
+     */
+    public function selectGroup($group_name, $selection_name = 'group')
+    {
+        $selection = $this->newSelection($group_name, $selection_name);
 
         return $selection;
     }

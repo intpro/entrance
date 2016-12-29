@@ -6,10 +6,19 @@ interface ExtractAgent
 {
     /**
      * @param string $group_name
+     * @param string $selection_name
+     *
+     * @return int
+     */
+    public function countGroup($group_name, $selection_name = 'group');
+
+    /**
+     * @param string $group_name
+     * @param string $selection_name
      *
      * @return \Interpro\Entrance\Contracts\Extract\Selection
      */
-    public function selectGroup($group_name);
+    public function selectGroup($group_name, $selection_name = 'group');
 
     /**
      * @param string $block_name

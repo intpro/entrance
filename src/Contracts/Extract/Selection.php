@@ -10,6 +10,11 @@ interface Selection
     public function get();
 
     /**
+     * @return int
+     */
+    public function count();
+
+    /**
      * @param string $field_path
      * @param string $value
      * @param string $or_union_name

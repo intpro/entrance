@@ -174,9 +174,19 @@ class AgentsTest extends TestCase
         $we_have .= $duckGusItem->slug.':(descr:'.$duckGusItem->descr.',title:'.$duckGusItem->title.',superior:'.$duckItem->id.'),';
         $we_have .= $duckDuckItem->slug.':(descr:'.$duckDuckItem->descr.',title:'.$duckDuckItem->title.',superior:'.$duckItem->id.'),';
 
+
+
         $this->assertEquals(
             $we_have, $must_be
         );
+
+        $birdsClasses = $this->extractAgent->countGroup('group_bird_class');
+        $birdsTypes = $this->extractAgent->countGroup('group_bird_type');
+        $areas = $this->extractAgent->countGroup('group_area');
+
+        $this->assertEquals(6, $birdsClasses);
+        $this->assertEquals(3, $birdsTypes);
+        $this->assertEquals(3, $areas);
     }
 
     public function update()
@@ -294,11 +304,13 @@ class AgentsTest extends TestCase
             //Здесь можно удалить и блоки...
         }
 
-        //Проверить после того как допишется сквозная count функция экстрактора
+        $birdsClasses = $this->extractAgent->countGroup('group_bird_class');
+        $birdsTypes = $this->extractAgent->countGroup('group_bird_type');
+        $areas = $this->extractAgent->countGroup('group_area');
 
-
-
-        $this->assertTrue(true, 'destruct');
+        $this->assertEquals(0, $birdsClasses);
+        $this->assertEquals(0, $birdsTypes);
+        $this->assertEquals(0, $areas);
     }
 
 }
