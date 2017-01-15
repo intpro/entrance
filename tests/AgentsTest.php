@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase;
 use Interpro\Extractor\Contracts\Items\BlockItem;
 
+//php vendor/bin/phpunit --verbose ./packages/interpro/Entrance
 class AgentsTest extends TestCase
 {
     use DatabaseMigrations;
@@ -191,7 +192,7 @@ class AgentsTest extends TestCase
 
     public function update()
     {
-        $this->updateAgent->update('block_birds', 0, ['descr' => 'Птицы', 'seodescription' => 'Птицы seo']);
+        $this->updateAgent->update('block_birds', 0, ['descr' => 'Птицы', 'seodescription' => 'Птицы seo', 'show' => false]);
         $this->updateAgent->update('block_areas', 0, ['descr' => 'Области обитания']);
 
 
@@ -226,6 +227,10 @@ class AgentsTest extends TestCase
 
         $birds = $this->extractAgent->getBlock('block_birds');
         $areas = $this->extractAgent->getBlock('block_areas');
+
+        $this->assertEquals(
+            false, $birds->show
+        );
 
         $this->assertEquals(
             'Птицы', $birds->descr

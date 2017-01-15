@@ -9,7 +9,7 @@ use Interpro\Core\Taxonomy\Enum\TypeMode;
 use Interpro\Core\Exception\InitException;
 use Interpro\Core\Taxonomy\Enum\TypeRank;
 use Interpro\Entrance\Contracts\CommandAgent\InitAgent as InitAgentInterface;
-use Interpro\Entrance\Contracts\Extract\ExtractAgent;
+use Interpro\Entrance\Contracts\Extract\ExtractAgent as ExtractAgentInterface;
 use Interpro\Extractor\Collections\BlockCollection;
 
 class InitAgent implements InitAgentInterface
@@ -21,7 +21,7 @@ class InitAgent implements InitAgentInterface
     public function __construct(
         InitMediator $initMediator,
         Taxonomy $taxonomy,
-        ExtractAgent $extractAgent
+        ExtractAgentInterface $extractAgent
     )
     {
         $this->initMediator = $initMediator;

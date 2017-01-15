@@ -79,7 +79,6 @@ class SyncAgent implements SyncAgentInterface
             {
                 $this->consoleOutput->writeln('Синхронизирован тип '.$block->getName());
             }
-
         }
 
         $groups = $this->taxonomy->getGroups();
