@@ -90,7 +90,21 @@ class AgentsTest extends TestCase
         //Создаст блоки
         $this->syncAgent->syncAll();
 
-        //-------------------------------------------------
+        //Тест feed feedback
+
+        $FeedbackBlock = $this->extractAgent->getBlock('feedback');
+        $form1Block = $this->extractAgent->getBlock('form1');
+        $form2Block = $this->extractAgent->getBlock('form2'); //формы хранятся там же где feedback блок, получаются так же
+
+        $must_be = 'owns:(name, string, feedback)(from, string, )(to, string, )(subject, string, )(username, string, )(password, string, )(host, string, )(port, string, )(encryption, string, )(descr1, string, )(descr2, string, )(number1, int, 0)(number2, int, 0)|flat:(mailfromac)|groups:(mailfromac)';
+        $we_have = $this->hashBlock($FeedbackBlock);
+
+        $this->assertEquals(
+            $we_have, $must_be
+        );
+
+
+        //Тест QS
 
         $birds_block = $this->extractAgent->getBlock('block_birds');
 
@@ -115,6 +129,19 @@ class AgentsTest extends TestCase
 
     public function init()
     {
+        //Тест feed feedback
+        $mail = $this->initAgent->init('form1_mail', ['descr1' => 'Извещение об уплате', 'subject' => 'Сабджект']);
+
+        $this->assertEquals(
+            'Извещение об уплате', $mail->descr1
+        );
+
+        $this->assertEquals(
+            'Сабджект', $mail->subject
+        );
+
+
+        //Тест QS
         //Набьем элементами группы и проверим соответствие выборки ожиданиям
         $pinguinItem = $this->initAgent->init('group_bird_type', ['slug' => 'pinguin', 'descr' => 'Все представители этого семейства хорошо плавают и ныряют.', 'title' => 'Пингвиновые']);
         $chickenItem = $this->initAgent->init('group_bird_type', ['slug' => 'chicken', 'descr' => 'У них крепкие лапы, приспособленные для быстрого бега и рытья земли.', 'title' => 'Курообразные']);
@@ -192,6 +219,21 @@ class AgentsTest extends TestCase
 
     public function update()
     {
+        //Тест feed feedback
+        $this->updateAgent->update('form1', 0, ['descr1' => 'Извещение об уплате', 'subject' => 'Сабджект']);
+        $form1 = $this->extractAgent->getBlock('form1');
+
+        $this->assertEquals(
+            'Извещение об уплате', $form1->descr1
+        );
+
+        $this->assertEquals(
+            'Сабджект', $form1->subject
+        );
+
+
+        //Тест QS
+
         $this->updateAgent->update('block_birds', 0, ['descr' => 'Птицы', 'seodescription' => 'Птицы seo', 'show' => false]);
         $this->updateAgent->update('block_areas', 0, ['descr' => 'Области обитания']);
 
@@ -308,6 +350,19 @@ class AgentsTest extends TestCase
 
             //Здесь можно удалить и блоки...
         }
+
+        $feedbackAc = $this->extractAgent->countGroup('mailfromac');
+        $form1Mail = $this->extractAgent->countGroup('form1_mail');
+        $form2Mail = $this->extractAgent->countGroup('form2_mail');
+        $form1MailTo = $this->extractAgent->countGroup('form1_mailto');
+        $form2MailTo = $this->extractAgent->countGroup('form2_mailto');
+
+        $this->assertEquals(0, $feedbackAc);
+        $this->assertEquals(0, $form1Mail);
+        $this->assertEquals(0, $form2Mail);
+        $this->assertEquals(0, $form1MailTo);
+        $this->assertEquals(0, $form2MailTo);
+
 
         $birdsClasses = $this->extractAgent->countGroup('group_bird_class');
         $birdsTypes = $this->extractAgent->countGroup('group_bird_type');
