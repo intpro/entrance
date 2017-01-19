@@ -221,6 +221,7 @@ class AgentsTest extends TestCase
     {
         //Тест feed feedback
         $this->updateAgent->update('form1', 0, ['descr1' => 'Извещение об уплате', 'subject' => 'Сабджект']);
+        $this->extractAgent->reset();
         $form1 = $this->extractAgent->getBlock('form1');
 
         $this->assertEquals(
@@ -265,6 +266,7 @@ class AgentsTest extends TestCase
         $this->updateAgent->update('group_bird_type', $duck->id, ['example' => $gusDuck->id, 'seotitle' => 'Тайтл утиных seo']);
 
 
+        $this->extractAgent->reset();
         //Заново получаем и проверяем, что получилось
 
         $birds = $this->extractAgent->getBlock('block_birds');

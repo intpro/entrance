@@ -4,7 +4,9 @@ namespace Interpro\Entrance\Agents;
 
 use Interpro\Core\Contracts\Taxonomy\Taxonomy;
 use Interpro\Core\Ref\ARef;
+use Interpro\Core\Taxonomy\Enum\TypeRank;
 use Interpro\Entrance\Contracts\Extract\ExtractAgent as ExtractAgentInterface;
+use Interpro\Entrance\Exception\EntranceException;
 use Interpro\Entrance\Extract\Selection;
 use Interpro\Extractor\Collections\BlockCollection;
 use Interpro\Extractor\Contracts\Load\Loader;
@@ -27,11 +29,28 @@ class ExtractAgent implements ExtractAgentInterface
         $this->taxonomy = $taxonomy;
     }
 
+    /**
+     * @param string $group_name
+     * @param string $selection_name
+     *
+     * @return \Interpro\Extractor\Contracts\Selection\SelectionUnit $selUnit
+     */
+    public function tuneSelection($group_name, $selection_name = 'group')
+    {
+        if($this->tuner->selectionExist($group_name, $selection_name))
+        {
+            return $this->tuner->getSelection($group_name, $selection_name);
+        }
+        else
+        {
+            $type = $this->taxonomy->getGroup($group_name);
+
+            return $this->tuner->initSelection($type, $selection_name);
+        }
+    }
+
     private function newSelection($group_name, $selection_name)
     {
-        $this->loader->reset();
-        $this->tuner->reset();
-
         if($this->tuner->selectionExist($group_name, $selection_name))
         {
             $unit = $this->tuner->getSelection($group_name, $selection_name);
@@ -80,10 +99,13 @@ class ExtractAgent implements ExtractAgentInterface
      */
     public function getBlock($block_name)
     {
-        $this->loader->reset();
-        $this->tuner->reset();
-
         $type = $this->taxonomy->getType($block_name);
+
+        if($type->getRank() !== TypeRank::BLOCK)
+        {
+            throw new EntranceException('Запрошенный элемент не является блоком ('.$block_name.')!');
+        }
+
         $ref = new ARef($type, 0);
 
         return $this->loader->loadItem($ref);
@@ -115,13 +137,22 @@ class ExtractAgent implements ExtractAgentInterface
      */
     public function getGroupItem($group_name, $id)
     {
-        $this->loader->reset();
-        $this->tuner->reset();
-
         $type = $this->taxonomy->getType($group_name);
+
+        if($type->getRank() !== TypeRank::GROUP)
+        {
+            throw new EntranceException('Запрошенный элемент не является группой ('.$group_name.')!');
+        }
+
         $ref = new ARef($type, $id);
 
         return $this->loader->loadItem($ref);
+    }
+
+    public function reset()
+    {
+        $this->loader->reset();
+        $this->tuner->reset();
     }
 
     /**

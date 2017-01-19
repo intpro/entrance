@@ -8,6 +8,14 @@ interface ExtractAgent
      * @param string $group_name
      * @param string $selection_name
      *
+     * @return \Interpro\Extractor\Contracts\Selection\SelectionUnit $selUnit
+     */
+    public function tuneSelection($group_name, $selection_name = 'group');
+
+    /**
+     * @param string $group_name
+     * @param string $selection_name
+     *
      * @return int
      */
     public function countGroup($group_name, $selection_name = 'group');
@@ -39,6 +47,11 @@ interface ExtractAgent
      * @return \Interpro\Extractor\Contracts\Items\GroupItem
      */
     public function getGroupItem($group_name, $id);
+
+    /**
+     * @return void
+     */
+    public function reset();
 
     /**
      * @param string $group_name
