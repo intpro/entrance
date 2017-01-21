@@ -6,8 +6,8 @@ use Interpro\Core\Contracts\Mediator\UpdateMediator;
 use Interpro\Core\Contracts\Taxonomy\Taxonomy;
 use Interpro\Core\Ref\ARef;
 use Interpro\Core\Taxonomy\Enum\TypeMode;
-use Interpro\Core\Exception\UpdateException;
 use Interpro\Entrance\Contracts\CommandAgent\UpdateAgent as UpdateAgentInterface;
+use Interpro\Entrance\Exception\EntranceException;
 
 class UpdateAgent implements UpdateAgentInterface
 {
@@ -34,12 +34,12 @@ class UpdateAgent implements UpdateAgentInterface
     {
         if(!is_string($type_name))
         {
-            throw new UpdateException('Название А-типа) должно быть задано строкой!');
+            throw new EntranceException('Название А-типа) должно быть задано строкой!');
         }
 
         if(!is_int($id))
         {
-            throw new UpdateException('Id А-типа должно быть задано целым числом!');
+            throw new EntranceException('Id А-типа должно быть задано целым числом!');
         }
 
         $type = $this->taxonomy->getType($type_name);
@@ -48,7 +48,7 @@ class UpdateAgent implements UpdateAgentInterface
 
         if($typeMode !== TypeMode::MODE_A)
         {
-            throw new UpdateException('Агент удаления может удалять только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
+            throw new EntranceException('Агент удаления может удалять только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
         }
 
         $family = $type->getFamily();

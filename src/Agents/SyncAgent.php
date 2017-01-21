@@ -7,8 +7,8 @@ use Interpro\Core\Contracts\Mediator\SyncMediator;
 use Interpro\Core\Contracts\Taxonomy\Taxonomy;
 use Interpro\Core\Contracts\Taxonomy\Types\AType;
 use Interpro\Core\Taxonomy\Enum\TypeMode;
-use Interpro\Core\Exception\SyncException;
 use Interpro\Entrance\Contracts\CommandAgent\SyncAgent as SyncAgentInterface;
+use Interpro\Entrance\Exception\EntranceException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class SyncAgent implements SyncAgentInterface
@@ -37,7 +37,7 @@ class SyncAgent implements SyncAgentInterface
 
         if($typeMode !== TypeMode::MODE_A)
         {
-            throw new SyncException('Агент синхронизации может синхронизировать только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
+            throw new EntranceException('Агент синхронизации может синхронизировать только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
         }
 
         $family = $type->getFamily();
@@ -56,7 +56,7 @@ class SyncAgent implements SyncAgentInterface
     {
         if(!is_string($type_name))
         {
-            throw new SyncException('Имя типа должно быть задано строкой!');
+            throw new EntranceException('Имя типа должно быть задано строкой!');
         }
 
         $type = $this->taxonomy->getType($type_name);

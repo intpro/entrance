@@ -6,8 +6,8 @@ use Interpro\Core\Contracts\Mediator\DestructMediator;
 use Interpro\Core\Contracts\Taxonomy\Taxonomy;
 use Interpro\Core\Ref\ARef;
 use Interpro\Core\Taxonomy\Enum\TypeMode;
-use Interpro\Core\Exception\DestructException;
 use Interpro\Entrance\Contracts\CommandAgent\DestructAgent as DestructAgentInterface;
+use Interpro\Entrance\Exception\EntranceException;
 
 class DestructAgent implements DestructAgentInterface
 {
@@ -33,12 +33,12 @@ class DestructAgent implements DestructAgentInterface
     {
         if(!is_string($type_name))
         {
-            throw new DestructException('Название А-типа) должно быть задано строкой!');
+            throw new EntranceException('Название А-типа) должно быть задано строкой!');
         }
 
         if(!is_int($id))
         {
-            throw new DestructException('Id А-типа должно быть задано целым числом!');
+            throw new EntranceException('Id А-типа должно быть задано целым числом!');
         }
 
         $type = $this->taxonomy->getType($type_name);
@@ -47,7 +47,7 @@ class DestructAgent implements DestructAgentInterface
 
         if($typeMode !== TypeMode::MODE_A)
         {
-            throw new DestructException('Агент удаления может удалять только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
+            throw new EntranceException('Агент удаления может удалять только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
         }
 
         $family = $type->getFamily();

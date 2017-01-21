@@ -6,10 +6,10 @@ use Interpro\Core\Contracts\Mediator\InitMediator;
 use Interpro\Core\Contracts\Taxonomy\Taxonomy;
 use Interpro\Core\Contracts\Taxonomy\Types\AType;
 use Interpro\Core\Taxonomy\Enum\TypeMode;
-use Interpro\Core\Exception\InitException;
 use Interpro\Core\Taxonomy\Enum\TypeRank;
 use Interpro\Entrance\Contracts\CommandAgent\InitAgent as InitAgentInterface;
 use Interpro\Entrance\Contracts\Extract\ExtractAgent as ExtractAgentInterface;
+use Interpro\Entrance\Exception\EntranceException;
 use Interpro\Extractor\Collections\BlockCollection;
 
 class InitAgent implements InitAgentInterface
@@ -35,7 +35,7 @@ class InitAgent implements InitAgentInterface
 
         if($typeMode !== TypeMode::MODE_A)
         {
-            throw new InitException('Агент инициализации может инициализировать только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
+            throw new EntranceException('Агент инициализации может инициализировать только тип (A) уровня, передан тип:'.$type->getName().'('.$typeMode.')!');
         }
 
         $family = $type->getFamily();
@@ -57,14 +57,14 @@ class InitAgent implements InitAgentInterface
     {
         if(!is_string($type_name))
         {
-            throw new InitException('Имя типа должно быть задано строкой!');
+            throw new EntranceException('Имя типа должно быть задано строкой!');
         }
 
         $type = $this->taxonomy->getType($type_name);
 
         if($type->getMode() !== TypeMode::MODE_A)
         {
-            throw new InitException('Тип '.$type_name.' может быть инициализирован только автоматически в составе (A) типа!');
+            throw new EntranceException('Тип '.$type_name.' может быть инициализирован только автоматически в составе (A) типа!');
         }
 
         $ref = $this->initType($type, $defaults);
