@@ -215,6 +215,28 @@ class AgentsTest extends TestCase
         $this->assertEquals(6, $birdsClasses);
         $this->assertEquals(3, $birdsTypes);
         $this->assertEquals(3, $areas);
+
+        //Пронумеровался ли сортировщик?
+        $this->assertEquals(1, $pinguinImperorItem->sorter);
+        $this->assertEquals(2, $pinguinAdeliItem->sorter);
+
+        $this->assertEquals(1, $chickenTeterevItem->sorter);
+        $this->assertEquals(2, $chickenFazanItem->sorter);
+
+        $this->assertEquals(1, $duckGusItem->sorter);
+        $this->assertEquals(2, $duckDuckItem->sorter);
+
+
+        $this->extractAgent->reset();
+        $selection = $this->extractAgent->selectGroup('group_bird_type');
+
+        $maxid = $selection->get()->maxByField('sorter');
+        $minid = $selection->get()->minByField('sorter');
+        $sumid = $selection->get()->sumByField('sorter');
+
+        $this->assertEquals(3, $maxid->sorter);
+        $this->assertEquals(1, $minid->sorter);
+        $this->assertEquals(6, $sumid);
     }
 
     public function update()
@@ -231,7 +253,6 @@ class AgentsTest extends TestCase
         $this->assertEquals(
             'Сабджект', $form1->subject
         );
-
 
         //Тест QS
 
