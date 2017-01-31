@@ -14,5 +14,10 @@ interface SyncAgent
     /**
      * @return void
      */
+    public function syncPredefinedGroupItems();
+
+    /**
+     * @return void
+     */
     public function syncAll();
 }

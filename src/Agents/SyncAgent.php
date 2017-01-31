@@ -67,6 +67,14 @@ class SyncAgent implements SyncAgentInterface
     /**
      * @return void
      */
+    public function syncPredefinedGroupItems()
+    {
+        $this->syncMediator->syncPredefinedGroupItems();
+    }
+
+    /**
+     * @return void
+     */
     public function syncAll()
     {
         $blocks = $this->taxonomy->getBlocks();
@@ -93,4 +101,6 @@ class SyncAgent implements SyncAgentInterface
             }
         }
     }
+
+
 }

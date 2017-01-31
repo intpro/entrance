@@ -82,7 +82,7 @@ class AgentsTest extends TestCase
         $this->sync();
         $this->init();
         $this->update();
-        $this->destruct();
+        //$this->destruct();
     }
     
     public function sync()

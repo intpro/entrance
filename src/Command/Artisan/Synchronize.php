@@ -43,6 +43,10 @@ class Synchronize extends Command
         {
             $this->syncAgent->syncAll();
         }
+        elseif($type_name === 'predefined')
+        {
+            $this->syncAgent->syncPredefinedGroupItems();
+        }
         else
         {
             $this->syncAgent->sync($type_name);

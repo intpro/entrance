@@ -15,7 +15,7 @@ class EntranceServiceProvider extends ServiceProvider {
      */
     public function boot(Dispatcher $dispatcher, Taxonomy $taxonomy, Tuner $tuner)
     {
-        Log::info('Загрузка EntranceServiceProvider');
+        //Log::info('Загрузка EntranceServiceProvider');
 
         $this->initDefaultSelectionUnits($taxonomy, $tuner);
     }
@@ -37,7 +37,7 @@ class EntranceServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        Log::info('Регистрация EntranceServiceProvider');
+        //Log::info('Регистрация EntranceServiceProvider');
 
         $this->app->singleton(
             'Interpro\Entrance\Contracts\Extract\ExtractAgent',
