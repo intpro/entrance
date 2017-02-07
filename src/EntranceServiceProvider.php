@@ -64,20 +64,6 @@ class EntranceServiceProvider extends ServiceProvider {
             'Interpro\Entrance\Agents\DestructAgent'
         );
 
-        $this->app->singleton(
-            'sync.command',
-            'Interpro\Entrance\Command\Artisan\Synchronize'
-        );
-
-        $this->commands(['sync.command']); //Остальные команды набивать доп. строками массива
-    }
-
-    /**
-     * @return array
-     */
-    public function provides()
-    {
-        return ['sync.command'];
     }
 
 }
