@@ -29,10 +29,11 @@ class AgentsTest extends TestCase
         return $app;
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
+        //Переписать
         $this->syncAgent     = $this->app->make('Interpro\Entrance\Contracts\CommandAgent\SyncAgent');
         $this->initAgent     = $this->app->make('Interpro\Entrance\Contracts\CommandAgent\InitAgent');
         $this->updateAgent   = $this->app->make('Interpro\Entrance\Contracts\CommandAgent\UpdateAgent');
@@ -40,7 +41,7 @@ class AgentsTest extends TestCase
         $this->extractAgent  = $this->app->make('Interpro\Entrance\Contracts\Extract\ExtractAgent');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -84,7 +85,7 @@ class AgentsTest extends TestCase
         $this->update();
         $this->destruct();
     }
-    
+
     public function sync()
     {
         //Создаст блоки
@@ -96,7 +97,8 @@ class AgentsTest extends TestCase
         $form1Block = $this->extractAgent->getBlock('form1');
         $form2Block = $this->extractAgent->getBlock('form2'); //формы хранятся там же где feedback блок, получаются так же
 
-        $must_be = 'owns:(name, string, feedback)(from, string, )(to, string, )(subject, string, )(username, string, )(password, string, )(host, string, )(port, string, )(encryption, string, )(descr1, string, )(descr2, string, )(number1, int, 0)(number2, int, 0)|flat:(mailfromac)|groups:(mailfromac)';
+        $must_be = 'owns:(name, string, feedback)(from, string, )(to, string, )(subject, string, )(username, string, )(password, string, )(host, string, )(port, string, )(encryption, string, )(descr1, string, пусто)(descr2, string, пусто)(number1, int, 0)(number2, int, 0)|flat:(mailfromac)|groups:(mailfromac)';
+
         $we_have = $this->hashBlock($FeedbackBlock);
 
         $this->assertEquals(
@@ -108,7 +110,7 @@ class AgentsTest extends TestCase
 
         $birds_block = $this->extractAgent->getBlock('block_birds');
 
-        $must_be = 'owns:(name, string, block_birds)(title, string, Блок block_birds)(show, bool, 1)(descr, string, )(seotitle, seo, )(seodescription, seo, )(seokeywords, seo, )|flat:(group_bird_type)(group_bird_class)(group_bird_area)|groups:(group_bird_type)';
+        $must_be = 'owns:(name, string, block_birds)(title, string, Блок block_birds)(show, bool, 1)(descr, string, пусто)(seotitle, seo, )(seodescription, seo, )(seokeywords, seo, )|flat:(group_bird_type)(group_bird_class)(group_bird_area)|groups:(group_bird_type)';
         $we_have = $this->hashBlock($birds_block);
 
         $this->assertEquals(
@@ -119,7 +121,7 @@ class AgentsTest extends TestCase
 
         $bird_areas = $this->extractAgent->getBlock('block_areas');
 
-        $must_be = 'owns:(name, string, block_areas)(title, string, Блок block_areas)(show, bool, 1)(descr, string, )|flat:(group_area)|groups:(group_area)';
+        $must_be = 'owns:(name, string, block_areas)(title, string, Блок block_areas)(show, bool, 1)(descr, string, пусто)|flat:(group_area)|groups:(group_area)';
         $we_have = $this->hashBlock($bird_areas);
 
         $this->assertEquals(
@@ -131,6 +133,8 @@ class AgentsTest extends TestCase
     {
         //Тест feed feedback
         $mail = $this->initAgent->init('form1_mail', ['descr1' => 'Извещение об уплате', 'subject' => 'Сабджект']);
+
+        //file_put_contents('/home/boris/sites/development/PRINT_R', print_r($mail->getOwns()->getOwnByName('descr1')->getValue(), true));
 
         $this->assertEquals(
             'Извещение об уплате', $mail->descr1
